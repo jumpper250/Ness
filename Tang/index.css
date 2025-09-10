@@ -1,0 +1,29 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body {
+    text-align: center;
+    
+}
+#question {
+    padding-top: 1%;
+    font-size: 5ex;
+}
+#sub_text {
+    padding-top: 2%;
+    font-size: 4ex;
+}
+#emoji {
+    padding-top: 1%;
+}
+.text_1 {
+    flex-direction: column;
+    padding-top: 1%;
+    line-height: 300%;
+}
+button {
+    margin-top: 1%;
+    
+}
