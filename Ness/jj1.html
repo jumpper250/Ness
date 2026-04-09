@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>พี่รักหนูน้าา 💖</title>
+<link rel="icon" href="img_new/e47838c5-350c-40df-862d-828f1f2bcc54.jpg">
+</head>
+
+<body>
+    <form id="form" action="jj2.html">
+        <h1 id="string">รักคนในคลิปมากแค่ไหน</h1>
+        <video width="300" controls>
+        <source src="c3428cbb-89a9-4df4-859f-1163139ef30e (video-converter.com).mp4" type="video/mp4">
+</video>
+    <div id="btnGroup">
+        <button id="love">รักมากกกกก!!</button>
+        <button id="runBtn">ไม่รักเลย</button>
+    </div>
+    </form>
+    <style>
+#string {
+    margin-bottom: 10px;
+}
+#form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+#btnGroup {
+    display: flex;
+    gap: 20px;
+    padding-top: 10px;
+}
+#love {
+    padding: 15px 25px;
+    font-size: 18px;
+    cursor: pointer;
+}    
+#runBtn {
+    position: relative;
+    padding: 15px 25px;
+    font-size: 18px;
+    cursor: pointer;
+}
+</style>
+<script>
+const btn = document.getElementById("runBtn");
+
+let mouse = { x: 0, y: 0 };
+
+// offset จากตำแหน่งเดิมใน flex
+let offsetX = 0;
+let offsetY = 0;
+
+window.addEventListener("mousemove", (e) => {
+    mouse.x = e.clientX;
+    mouse.y = e.clientY;
+});
+
+function animate() {
+    const rect = btn.getBoundingClientRect();
+    const btnX = rect.left + rect.width / 2;
+    const btnY = rect.top + rect.height / 2;
+
+    const dx = btnX - mouse.x;
+    const dy = btnY - mouse.y;
+    const distance = Math.sqrt(dx * dx + dy * dy);
+
+    // 👉 หนีเมาส์
+    if (distance < 150) {
+        const angle = Math.atan2(dy, dx);
+
+        // แรงขึ้นตามความใกล้ = เนียน
+        const force = (150 - distance) / 150;
+
+        offsetX += Math.cos(angle) * force * 10;
+        offsetY += Math.sin(angle) * force * 10;
+    } 
+    // 👉 กลับเข้าที่
+    else {
+        offsetX *= 0.9;
+        offsetY *= 0.9;
+    }
+
+    btn.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
+
+    requestAnimationFrame(animate);
+}
+
+animate();
+</script>
+</body>
+
+</html>
