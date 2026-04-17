@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<title>❤</title>
+<link rel="icon" href="img_new/e47838c5-350c-40df-862d-828f1f2bcc54.jpg" >
+<style>
+body {
+  background: black;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.heart {
+  position: relative;
+  width: min(90vw, 540px);
+  height: min(90vw, 540px);
+}
+
+.heart span {
+  position: absolute;
+  color: #ff9ecb;
+  font-size: 16px;
+  white-space: nowrap;
+  text-shadow: 0 0 12px #fff, 0 0 20px #ff9ecb;
+  transform: translate(-50%, -50%);
+}
+h1 {
+  margin-bottom: 20px;
+  color: #fff;
+  text-shadow: 0 0 10px #fff, 0 0 20px #ff9ecb;
+}
+</style>
+</head>
+<body>
+<h1 id="typeText"></h1>
+<div class="heart" id="heart"></div>
+
+<script>
+const container = document.getElementById("heart");
+
+let points = [];
+let spans = [];
+let distances = [0];
+let totalLength = 0;
+let spacing = 0;
+
+let textCount = 60;
+
+// สร้าง span ก่อน
+for (let i = 0; i < textCount; i++) {
+  let span = document.createElement("span");
+  span.innerText = "I love you";
+  container.appendChild(span);
+  spans.push(span);
+}
+
+// 🔥 ฟังก์ชันสร้างหัวใจ (RESPONSIVE)
+function createHeart() {
+  points = [];
+  distances = [0];
+
+  const size = container.offsetWidth;
+  const center = size / 2;
+
+  // scale ปรับตามจอ
+  let scale = size / 45;
+
+  for (let t = 0; t < Math.PI * 2; t += 0.035) {
+
+    let x = 18 * Math.pow(Math.sin(t), 3);
+    let y = -(14 * Math.cos(t)
+            - 3 * Math.cos(2*t)
+            - 3 * Math.cos(3*t));
+
+    y = y * 0.95 - 4;
+
+    points.push({
+      x: center + x * scale,
+      y: center + y * scale
+    });
+  }
+
+  // คำนวณระยะทาง
+  for (let i = 1; i < points.length; i++) {
+    let dx = points[i].x - points[i-1].x;
+    let dy = points[i].y - points[i-1].y;
+    let dist = Math.sqrt(dx*dx + dy*dy);
+    distances.push(distances[i-1] + dist);
+  }
+
+  totalLength = distances[distances.length - 1];
+  spacing = totalLength / textCount;
+}
+
+// หา point ตามระยะ
+function getPointAtDistance(d) {
+  d = d % totalLength;
+
+  for (let i = 1; i < distances.length; i++) {
+    if (distances[i] >= d) {
+      let t = (d - distances[i-1]) / (distances[i] - distances[i-1]);
+
+      return {
+        x: points[i-1].x * (1 - t) + points[i].x * t,
+        y: points[i-1].y * (1 - t) + points[i].y * t
+      };
+    }
+  }
+
+  return points[0];
+}
+
+// animation
+let offset = 0;
+
+function animate() {
+  for (let i = 0; i < spans.length; i++) {
+
+    let d = offset + i * spacing;
+    let pos = getPointAtDistance(d);
+
+    spans[i].style.left = pos.x + "px";
+    spans[i].style.top = pos.y + "px";
+  }
+
+  offset += 1.2;
+  requestAnimationFrame(animate);
+}
+
+// 🔥 เริ่ม
+createHeart();
+animate();
+
+const text = "J & N";
+const target = document.getElementById("typeText");
+
+let i = 0;
+
+function typeWriter() {
+  if (i < text.length) {
+    target.innerHTML += text.charAt(i);
+    i++;
+    setTimeout(typeWriter, 500); // ความเร็ว (ยิ่งน้อยยิ่งเร็ว)
+  }
+}
+
+typeWriter();
+// 🔥 ถ้าหมุนจอ / เปลี่ยนขนาด
+window.addEventListener("resize", () => {
+  createHeart();
+});
+</script>
+
+</body>
+</html>
